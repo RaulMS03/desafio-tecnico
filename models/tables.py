@@ -15,7 +15,7 @@ class BaseModel(Model):
 class Estoques(BaseModel):
     id = PrimaryKeyField(null=False)
     nome = TextField()
-    status = TextField()
+    status = BooleanField(default=True)
     criado_em = DateTimeField(default=datetime.datetime.now)
     atualizado_em = DateTimeField(default=datetime.datetime.now)
 

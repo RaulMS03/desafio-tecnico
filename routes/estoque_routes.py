@@ -1,5 +1,5 @@
 from flask import Blueprint, request, jsonify
-from services.estoque_service import get_estoques, get_estoque_by_id, criar_estoque
+from services.estoque_service import get_estoques, get_estoque_by_id, criar_estoque, alterar_status_estoque
 from schemas.estoque_schema import estoques_schema, estoque_schema
 import peewee
 
@@ -18,14 +18,40 @@ def estoques_endpoint():
 
         return jsonify({"message": "Criado com sucesso"}), 201
 
-@estoque_bp.route("/estoques/<id>", methods=['GET', 'PATCH'])
+@estoque_bp.route("/estoques/<int:id>", methods=['GET'])
 def estoque_id(id):
-    if request.method == "GET":
-        try:
-            estoque = get_estoque_by_id(id)
-            return jsonify({'estoque': estoque_schema.dump(estoque)}), 200
-        except peewee.DoesNotExist:
-            return {"message": f"O estoque com o id informado não existe"}
+    try:
+        estoque = get_estoque_by_id(id)
+        return jsonify({'estoque': estoque_schema.dump(estoque)}), 200
 
-    if request.method == "PATCH":
-        return
+    except peewee.DoesNotExist:
+        return {"message": f"O estoque com o id informado não existe"}, 404
+
+@estoque_bp.route("/estoques/<int:id>/desativar", methods=['PATCH'])
+def desativar_estoque_by_id(id):
+    try:
+        estoque = get_estoque_by_id(id)
+        data = request.get_json()
+        status = data.get("status")
+
+        if status is None:
+            return {"message": "Campo 'status' é obrigatorio"}, 400
+
+        if status:
+            return {"message": "Não é permitido reativar um estoque por esta rota"}, 400
+
+        if not estoque.status:
+            return {"message": "O estoque ja está desativado"}, 400
+
+        estoque_data = {"id": id, "status": status}
+        validate_data = estoque_schema.load(estoque_data, partial=True)
+
+        alterar_status_estoque(validate_data)
+
+        return jsonify({"estoque": "Estoque alterado com sucesso"}), 200
+
+    except peewee.DoesNotExist:
+        return {"message": f"O estoque com o id informado não existe"}, 404
+
+    except Exception as e:
+        return {"message": f"Erro ao desativar estoque: {str(e)}"}, 500
