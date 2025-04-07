@@ -13,7 +13,7 @@ class BaseModel(Model):
         database = db
 
 class Estoques(BaseModel):
-    id = PrimaryKeyField(null=False)
+    id = AutoField()
     nome = TextField()
     status = BooleanField(default=True)
     criado_em = DateTimeField(default=datetime.datetime.now)

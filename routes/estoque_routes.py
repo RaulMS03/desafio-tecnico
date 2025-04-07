@@ -13,7 +13,20 @@ def estoques_endpoint():
 
     if request.method == "POST":
         data = request.get_json()
-        validate_data = estoque_schema.load(data)
+        nome = data.get("nome")
+
+        campo_permitido = {"nome"}
+        campos_recebidos = set(data.keys())
+        campos_invalidos = campos_recebidos - campo_permitido
+
+        if campos_invalidos:
+            return {
+                "message": f"Campos inválidos: {', '.join(campos_invalidos)}. Só é necessario: 'nome'"
+            }, 400
+
+        estoque_data = {"nome": nome}
+
+        validate_data = estoque_schema.load(estoque_data, partial=True)
         criar_estoque(validate_data)
 
         return jsonify({"message": "Criado com sucesso"}), 201
