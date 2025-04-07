@@ -1,4 +1,4 @@
-from models.tables import Estoques
+from models.estoque import Estoques
 
 def get_estoques():
     return list(Estoques.select())
