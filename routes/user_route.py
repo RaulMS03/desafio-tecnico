@@ -1,64 +1,62 @@
-import peewee
 from flask import Blueprint, request, jsonify
 from flask_jwt_extended import create_access_token
-from werkzeug.security import generate_password_hash, check_password_hash
+from marshmallow import ValidationError
+from werkzeug.security import generate_password_hash
 from peewee import IntegrityError
 
-from models import Usuarios
 from schemas.user_schema import UserSchema
-from services.user_service import create_user
+from services.user_service import create_user, authenticate_user
+from datetime import timedelta
+
+from utils.responses import response
+from utils.validators import validate_fields
 
 user_bp = Blueprint('user_bp', __name__)
 
 @user_bp.route("/auth/register", methods=['POST'])
 def register_user():
-    data = request.get_json()
-    name = data.get('nome')
-    email = data.get('email')
-    password = data.get('senha_hash')
-
-    if not name or not email or not password:
-        return jsonify({'message': "É necessario: 'nome', 'email' e 'senha_hash'"}), 400
-
-    hashed_password = generate_password_hash(password)
-    user_data = {
-        "nome": name,
-        "email": email,
-        "senha_hash": hashed_password
-    }
-
     try:
-        validate_user = UserSchema().load(user_data)
-        create_user(validate_user)
+        data = request.get_json()
+        validate_fields(data, {"nome", "email", "senha"})
 
-        return jsonify({"message": "Usuario criado"}), 201
+        data["senha_hash"] = generate_password_hash(data.pop("senha"))
+        validate_user = UserSchema().load(data)
+
+        create_user(validate_user)
+        return response(message="Usuário criado com sucesso", status=201)
+
+    except ValidationError as error:
+        return response(message=f"Erro de validação: {error.messages}", status=400)
     except IntegrityError:
-        return jsonify({"message": "Usuario já existe"}), 409
+        return response(message="Usuário já existe", status=409)
+    except Exception as error:
+        return response(message=f"Erro ao registrar usuário: {str(error)}", status=500)
 
 @user_bp.route("/auth/login", methods=['POST'])
 def login():
-    data = request.get_json()
-    email = data.get('email')
-    password = data.get('senha_hash')
-
-    if not email or not password:
-        return jsonify({"message": "Necessario 'email' e 'senha_hash'"}), 400
-
     try:
-        user = Usuarios.get(Usuarios.email == email)
-    except peewee.DoesNotExist:
-        return jsonify({"message": "Usuario não encontrado"}), 400
+        data = request.get_json()
+        validate_fields(data, {"email", "senha"})
 
-    if not check_password_hash(user.senha_hash, password):
-        return jsonify({"message": "Senha incorreta"}), 401
+        user, error = authenticate_user(data["email"], data["senha"])
+        if error:
+            return response(message=error, status=401)
 
-    access_token = create_access_token(identity=str(user.id))
+        access_token = create_access_token(
+            identity=str(user.id),
+            expires_delta=timedelta(minutes=15)
+        )
 
-    return jsonify({
-        "token": access_token,
-        "usuario": {
-            "id": user.id,
-            "nome": user.nome,
-            "email": user.email
-        }
-    }), 200
+        return jsonify({
+            "token": access_token,
+            "usuario": {
+                "id": user.id,
+                "nome": user.nome,
+                "email": user.email
+            }
+        }), 200
+
+    except ValidationError as error:
+        return response(message=f"Erro de validação: {error.messages}", status=400)
+    except Exception as error:
+        return response(message=f"Erro ao fazer login: {str(error)}", status=500)

@@ -6,6 +6,3 @@ class EstoqueSchema(Schema):
     status = fields.Boolean(required=True)
     criado_em = fields.DateTime()
     atualizado_em = fields.DateTime()
-
-estoques_schema = EstoqueSchema(many=True)
-estoque_schema = EstoqueSchema()
