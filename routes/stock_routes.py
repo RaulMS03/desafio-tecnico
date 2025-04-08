@@ -2,10 +2,10 @@ from flask import Blueprint, request, jsonify
 from marshmallow import ValidationError
 
 from services.estoque_service import (
-    get_estoques,
-    get_estoque_by_id,
-    criar_estoque,
-    alterar_status_estoque
+    get_stocks,
+    get_stock_by_id,
+    create_stock,
+    change_stock_status,
 )
 from schemas.estoque_schema import EstoqueSchema
 from flask_jwt_extended import jwt_required, get_jwt_identity
@@ -24,7 +24,7 @@ def stocks_endpoint():
         return response(message="Acesso negado: token inválido", status=401)
 
     if request.method == "GET":
-        stocks = get_estoques()
+        stocks = get_stocks()
         return jsonify({"Estoques": EstoqueSchema(many=True).dump(stocks)}),200
 
     if request.method == "POST":
@@ -32,7 +32,7 @@ def stocks_endpoint():
             data = request.get_json()
             validate_fields(data, {"nome"})
             validate_data = EstoqueSchema().load(data, partial=True)
-            criar_estoque(validate_data)
+            create_stock(validate_data)
             return response(message="Estoque criado com sucesso", status=201)
         except ValueError as error:
             return response(message=str(error), status=400)
@@ -43,7 +43,7 @@ def stocks_endpoint():
 @jwt_required()
 def estoque_id(id):
     try:
-        estoque = get_estoque_by_id(id)
+        estoque = get_stock_by_id(id)
         return jsonify({'estoque': EstoqueSchema().dump(estoque)}), 200
 
     except peewee.DoesNotExist:
@@ -61,13 +61,13 @@ def desativar_estoque_by_id(id):
         if status:
             return response(message="Reativação de estoque não é permitida nesta rota", status=400)
 
-        estoque = get_estoque_by_id(id)
+        estoque = get_stock_by_id(id)
 
         if not estoque.status:
             return response(message="O estoque já está desativado", status=400)
 
         validate_data = EstoqueSchema().load(data={"id": id, "status": status}, partial=True)
-        alterar_status_estoque(validate_data)
+        change_stock_status(validate_data)
 
         return response(message="Estoque desativado com sucesso", status=200)
 
