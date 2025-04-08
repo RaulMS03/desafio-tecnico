@@ -3,7 +3,7 @@ from models.estoque import Estoques
 def get_estoques():
     return list(Estoques.select())
 
-def get_estoque_by_id(id):
+def get_estoque_by_id(id: int) -> Estoques:
     return Estoques.get_by_id(id)
 
 def criar_estoque(data):

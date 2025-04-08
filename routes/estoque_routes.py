@@ -1,12 +1,19 @@
 from flask import Blueprint, request, jsonify
 from services.estoque_service import get_estoques, get_estoque_by_id, criar_estoque, alterar_status_estoque
 from schemas.estoque_schema import estoques_schema, estoque_schema
+from flask_jwt_extended import jwt_required, get_jwt_identity
 import peewee
 
 estoque_bp = Blueprint('estoque_bp', __name__)
 
 @estoque_bp.route("/estoques", methods=['GET', 'POST'])
+@jwt_required()
 def estoques_endpoint():
+    user_id = get_jwt_identity()
+
+    if not user_id:
+        return jsonify({"message": "Acesso negado: token inválido"}), 401
+
     if request.method == "GET":
         estoques = get_estoques()
         return jsonify({'estoques': estoques_schema.dump(estoques)}), 200
@@ -20,9 +27,9 @@ def estoques_endpoint():
         campos_invalidos = campos_recebidos - campo_permitido
 
         if campos_invalidos:
-            return {
+            return jsonify({
                 "message": f"Campos inválidos: {', '.join(campos_invalidos)}. Só é necessario: 'nome'"
-            }, 400
+            }), 400
 
         estoque_data = {"nome": nome}
 
