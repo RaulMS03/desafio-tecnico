@@ -7,11 +7,11 @@ import datetime
 
 class HistoricoMovimentacao(BaseModel):
     id = AutoField()
-    equipamento = ForeignKeyField(Equipamentos, backref="historicos")
-    usuario = ForeignKeyField(Usuarios, backref="historicos")
+    equipamento_id = ForeignKeyField(Equipamentos, backref="historicos")
+    usuario_id = ForeignKeyField(Usuarios, backref="historicos")
     tipo_movimentacao = TextField()
     data_hora = DateTimeField(default=datetime.datetime.now)
-    localizacao = ForeignKeyField(Localizacoes, backref="historicos")
+    localizacao_id = ForeignKeyField(Localizacoes, backref="historicos")
 
     class Meta:
         table_name = "historico_movimentacao"

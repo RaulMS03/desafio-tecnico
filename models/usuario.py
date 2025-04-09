@@ -6,6 +6,7 @@ class Usuarios(BaseModel):
     nome = TextField()
     email = CharField(unique=True)
     senha_hash = CharField()
+    papel = CharField(default='operador')
 
     class Meta:
         table_name = "usuarios"

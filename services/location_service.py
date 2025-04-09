@@ -5,7 +5,7 @@ from models import Localizacoes, Estoques
 def get_locations():
     return list(Localizacoes.select())
 
-def create_location(data):
+def create_valid_location(data):
     try:
         stock = Estoques.get_by_id(data["estoque_id"])
     except peewee.DoesNotExist:

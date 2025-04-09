@@ -5,3 +5,4 @@ class UserSchema(Schema):
     nome = fields.String(required=True, validate=validate.Length(min=1))
     email = fields.Email(required=True, validate=validate.Length(min=5))
     senha_hash = fields.String(required=True, validate=validate.Length(min=1))
+    papel = fields.String(required=True, validate=validate.OneOf(["admin", "operador"]))

@@ -6,7 +6,7 @@ def get_stocks():
 def get_stock_by_id(id: int) -> Estoques:
     return Estoques.get_by_id(id)
 
-def create_stock(data):
+def create_valid_stock(data):
     return Estoques.create(**data)
 
 def change_stock_status(data):

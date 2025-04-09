@@ -27,7 +27,7 @@ def check_equipment_duplicate(nome, estoque_id, ignore_id=None):
         query = query.where(Equipamentos.id != ignore_id)
     return query.exists()
 
-def create_equipments(data):
+def create_valid_equipments(data):
     try:
         stock = Estoques.get_by_id(data["estoque_id"])
         equipment_type = TiposEquipamento.get_by_id(data["tipo_id"])

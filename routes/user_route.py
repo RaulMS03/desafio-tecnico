@@ -17,7 +17,7 @@ user_bp = Blueprint('user_bp', __name__)
 def register_user():
     try:
         data = request.get_json()
-        validate_fields(data, {"nome", "email", "senha"})
+        validate_fields(data, {"nome", "email", "senha", "papel"})
 
         data["senha_hash"] = generate_password_hash(data.pop("senha"))
         validate_user = UserSchema().load(data)
@@ -52,7 +52,8 @@ def login():
             "usuario": {
                 "id": user.id,
                 "nome": user.nome,
-                "email": user.email
+                "email": user.email,
+                "papel": user.papel
             }
         }), 200
 
