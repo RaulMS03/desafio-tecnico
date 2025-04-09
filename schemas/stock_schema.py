@@ -1,6 +1,6 @@
 from marshmallow import Schema, fields
 
-class EstoqueSchema(Schema):
+class StockSchema(Schema):
     id = fields.Integer()
     nome = fields.String(required=True)
     status = fields.Boolean(required=True)

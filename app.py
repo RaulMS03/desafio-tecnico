@@ -4,6 +4,7 @@ from flasgger import Swagger
 from flask_jwt_extended import JWTManager, verify_jwt_in_request, get_jwt
 from flask_jwt_extended.exceptions import NoAuthorizationError, JWTDecodeError
 
+from routes.location_routes import location_bp
 from routes.stock_routes import stock_bp
 from routes.user_route import user_bp
 from marshmallow.exceptions import ValidationError
@@ -31,12 +32,13 @@ def check_expired_token():
         if claims:
             token_iat = claims.get("iat", 0)
             if token_iat < JWT_ISSUED_AT_MIN:
-                return jsonify({"msg": "Token expirado. Faça login novamente."}), 401
+                return jsonify({"message": "Token expirado. Faça login novamente."}), 401
     except (NoAuthorizationError, JWTDecodeError):
         pass
 
 app.register_blueprint(stock_bp)
 app.register_blueprint(user_bp)
+app.register_blueprint(location_bp)
 
 #swagger = Swagger(app)
 

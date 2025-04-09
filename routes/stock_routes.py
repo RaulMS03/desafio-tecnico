@@ -1,13 +1,13 @@
 from flask import Blueprint, request, jsonify
 from marshmallow import ValidationError
 
-from services.estoque_service import (
+from services.stock_service import (
     get_stocks,
     get_stock_by_id,
     create_stock,
     change_stock_status,
 )
-from schemas.estoque_schema import EstoqueSchema
+from schemas.stock_schema import StockSchema
 from flask_jwt_extended import jwt_required, get_jwt_identity
 from utils.responses import response
 from utils.validators import validate_fields
@@ -25,13 +25,13 @@ def stocks_endpoint():
 
     if request.method == "GET":
         stocks = get_stocks()
-        return jsonify({"Estoques": EstoqueSchema(many=True).dump(stocks)}),200
+        return jsonify({"Estoques": StockSchema(many=True).dump(stocks)}),200
 
     if request.method == "POST":
         try:
             data = request.get_json()
             validate_fields(data, {"nome"})
-            validate_data = EstoqueSchema().load(data, partial=True)
+            validate_data = StockSchema().load(data, partial=True)
             create_stock(validate_data)
             return response(message="Estoque criado com sucesso", status=201)
         except ValueError as error:
@@ -41,17 +41,17 @@ def stocks_endpoint():
 
 @stock_bp.route("/estoques/<int:id>", methods=['GET'])
 @jwt_required()
-def estoque_id(id):
+def stock_by_id(id):
     try:
-        estoque = get_stock_by_id(id)
-        return jsonify({'estoque': EstoqueSchema().dump(estoque)}), 200
+        stock = get_stock_by_id(id)
+        return jsonify({'estoque': StockSchema().dump(stock)}), 200
 
     except peewee.DoesNotExist:
         return {"message": f"O estoque com o ID informado não existe"}, 404
 
 @stock_bp.route("/estoques/<int:id>/desativar", methods=['PATCH'])
 @jwt_required()
-def desativar_estoque_by_id(id):
+def disable_stock_by_id(id):
     try:
         data = request.get_json()
         status = data.get("status")
@@ -61,12 +61,12 @@ def desativar_estoque_by_id(id):
         if status:
             return response(message="Reativação de estoque não é permitida nesta rota", status=400)
 
-        estoque = get_stock_by_id(id)
+        stock = get_stock_by_id(id)
 
-        if not estoque.status:
+        if not stock.status:
             return response(message="O estoque já está desativado", status=400)
 
-        validate_data = EstoqueSchema().load(data={"id": id, "status": status}, partial=True)
+        validate_data = StockSchema().load(data={"id": id, "status": status}, partial=True)
         change_stock_status(validate_data)
 
         return response(message="Estoque desativado com sucesso", status=200)
