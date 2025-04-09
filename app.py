@@ -32,7 +32,7 @@ def create_app():
     app.register_blueprint(category_bp)
     app.register_blueprint(equipments_bp)
 
-    #swagger = Swagger(app)
+    Swagger(app)
 
     @app.before_request
     def check_expired_token():

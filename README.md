@@ -13,7 +13,6 @@ Este projeto é uma API RESTful desenvolvida em Python utilizando Flask. A aplic
 ├── routes/                     # Endpoints da API
 ├── schemas/                    # Esquemas de validação de dados
 ├── services/                   # Lógica de negócios
-├── tests/                      # Testes com Pytest
 ├── utils/                      # Funções auxiliares
 ├── .env.example                # Exemplo de variáveis de ambiente
 ├── app.py                      # Arquivo principal que inicia o servidor Flask
@@ -79,15 +78,15 @@ A aplicação estará disponível em: [http://localhost:5000](http://localhost:5
 Após subir os containers com `docker-compose up --build`, você pode acessar o pgAdmin através do navegador:
 
 - **URL:** [http://localhost:5050](http://localhost:5050)
-- **Login:** valor de PGADMIN_DEFAULT_EMAIL no seu `.env`
-- **Senha:** valor de PGADMIN_DEFAULT_PASSWORD no seu `.env`
+- **Login:** valor de `PGADMIN_DEFAULT_EMAIL` no seu `.env`
+- **Senha:** valor de `PGADMIN_DEFAULT_PASSWORD` no seu `.env`
 
 Adicione uma nova conexão com os seguintes dados:
 
 - **Host:** `db`
 - **Porta:** `5432`
-- **Usuário:** `admin` (ou o valor de POSTGRES_USER no seu `.env`)
-- **Senha:** `admin` (ou o valor de POSTGRES_PASSWORD no seu `.env`)
+- **Usuário:** valor de `POSTGRES_USER` no seu `.env`
+- **Senha:** valor de `POSTGRES_PASSWORD` no seu `.env`
 
 ---
 
@@ -95,32 +94,7 @@ Adicione uma nova conexão com os seguintes dados:
 
 Após subir os containers, você pode acessar a documentação interativa da API gerada pelo Swagger em:
 
-- **URL:** [http://localhost:5000/swagger](http://localhost:5000/swagger)
-
----
-## 🧪 Rodando os Testes
-
-> A pasta `/tests` já está preparada para testes com `pytest`.
-
-### 📦 Dentro do Docker:
-
-```bash
-docker-compose exec web pytest
-```
-
-### 🖥️ Fora do Docker:
-
-1. Instale as dependências:
-
-```bash
-pip install -r requirements.txt
-```
-
-2. Rode os testes:
-
-```bash
-pytest
-```
+- **URL:** [http://localhost:5000/apidocs/](http://localhost:5000/apidocs/)
 
 ---
 
@@ -156,7 +130,6 @@ Authorization: Bearer <seu_token>
 - PostgreSQL
 - Docker e Docker Compose
 - JWT (JSON Web Token)
-- Pytest
 
 ---
 
@@ -175,7 +148,6 @@ Authorization: Bearer <seu_token>
 ## 📌 Observações
 
 - O serviço de backend só inicia após o banco estar pronto.
-- O projeto está pronto para receber testes unitários e de integração via Pytest.
 - Código modular e seguindo boas práticas de clean code.
 
 ---
