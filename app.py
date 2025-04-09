@@ -4,6 +4,8 @@ from flasgger import Swagger
 from flask_jwt_extended import JWTManager, verify_jwt_in_request, get_jwt
 from flask_jwt_extended.exceptions import NoAuthorizationError, JWTDecodeError
 
+from routes.category_route import category_bp
+from routes.equipment_type_route import equipment_type_bp
 from routes.location_routes import location_bp
 from routes.stock_routes import stock_bp
 from routes.user_route import user_bp
@@ -39,6 +41,8 @@ def check_expired_token():
 app.register_blueprint(stock_bp)
 app.register_blueprint(user_bp)
 app.register_blueprint(location_bp)
+app.register_blueprint(equipment_type_bp)
+app.register_blueprint(category_bp)
 
 #swagger = Swagger(app)
 
