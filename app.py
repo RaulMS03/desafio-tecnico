@@ -6,8 +6,9 @@ from flask_jwt_extended.exceptions import NoAuthorizationError, JWTDecodeError
 
 from routes.category_route import category_bp
 from routes.equipment_type_route import equipment_type_bp
-from routes.location_routes import location_bp
-from routes.stock_routes import stock_bp
+from routes.equipments_route import equipments_bp
+from routes.location_route import location_bp
+from routes.stock_route import stock_bp
 from routes.user_route import user_bp
 from marshmallow.exceptions import ValidationError
 import os
@@ -43,6 +44,7 @@ app.register_blueprint(user_bp)
 app.register_blueprint(location_bp)
 app.register_blueprint(equipment_type_bp)
 app.register_blueprint(category_bp)
+app.register_blueprint(equipments_bp)
 
 #swagger = Swagger(app)
 
