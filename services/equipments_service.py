@@ -8,8 +8,6 @@ def get_filtered_equipments(filters: dict):
 
     if 'estoque_id' in filters:
         query = query.where(Equipamentos.estoque_id == filters['estoque_id'])
-    # if 'localizacao' in filters:
-    #     query = query.where(Equipamentos. == filters['localizacao'])
     if 'tipo_id' in filters:
         query = query.where(Equipamentos.tipo_id == filters['tipo_id'])
     if 'categoria_id' in filters:
@@ -20,6 +18,14 @@ def get_filtered_equipments(filters: dict):
         raise ValueError("Nenhum equipamento encontrado com os filtros fornecidos.")
     return equipamentos
 
+def check_equipment_duplicate(nome, estoque_id, ignore_id=None):
+    query = Equipamentos.select().where(
+        (Equipamentos.nome == nome) &
+        (Equipamentos.estoque_id == estoque_id)
+    )
+    if ignore_id:
+        query = query.where(Equipamentos.id != ignore_id)
+    return query.exists()
 
 def create_equipments(data):
     try:
@@ -29,10 +35,7 @@ def create_equipments(data):
     except peewee.DoesNotExist:
         raise ValueError("Alguma referência de ID fornecida não existe.")
 
-    if Equipamentos.select().where(
-        (Equipamentos.nome == data["nome"]) &
-        (Equipamentos.estoque_id == stock.id)
-    ).exists():
+    if check_equipment_duplicate(data["nome"], stock.id):
         raise ValueError("Já existe um equipamento com esse nome nesse estoque.")
 
     return Equipamentos.create(
@@ -52,28 +55,23 @@ def change_equipment_status(data):
 
 def update_equipment_by_id(data):
     try:
-        equipments = Equipamentos.get_by_id(data["id"])
+        equipment = Equipamentos.get_by_id(data["id"])
 
-        new_name = data.get("nome", equipments.nome)
-        new_stock_id = data.get("estoque_id", equipments.estoque_id)
+        new_name = data.get("nome", equipment.nome)
+        new_stock_id = data.get("estoque_id", equipment.estoque_id)
 
-        if Equipamentos.select().where(
-            (Equipamentos.nome == new_name) &
-            (Equipamentos.estoque_id == new_stock_id) &
-            (Equipamentos.id != equipments.id)
-        ).exists():
+        if check_equipment_duplicate(new_name, new_stock_id, ignore_id=equipment.id):
             raise ValueError("Já existe um equipamento com esse nome nesse estoque.")
 
-        equipments.nome = data.get("nome", equipments.nome)
-        equipments.status = data.get("status", equipments.status)
-        equipments.estoque_id = data.get("estoque_id", equipments.estoque_id)
-        equipments.tipo_id = data.get("tipo_id", equipments.tipo_id)
-        equipments.categoria_id = data.get("categoria_id", equipments.categoria_id)
-        # equipments.localizacao = data.get("localizacao", equipments.localizacao)
-        equipments.atualizado_em = datetime.now(timezone.utc)
+        equipment.nome = data.get("nome", equipment.nome)
+        equipment.status = data.get("status", equipment.status)
+        equipment.estoque_id = data.get("estoque_id", equipment.estoque_id)
+        equipment.tipo_id = data.get("tipo_id", equipment.tipo_id)
+        equipment.categoria_id = data.get("categoria_id", equipment.categoria_id)
+        equipment.atualizado_em = datetime.now(timezone.utc)
 
-        equipments.save()
-        return equipments
+        equipment.save()
+        return equipment
 
     except peewee.DoesNotExist:
         raise ValueError("Equipamento não encontrado.")
