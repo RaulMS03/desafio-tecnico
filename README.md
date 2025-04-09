@@ -151,4 +151,3 @@ Authorization: Bearer <seu_token>
 - Código modular e seguindo boas práticas de clean code.
 
 ---
-> Feito com 💻 por [RaulMS03](https://github.com/RaulMS03)
