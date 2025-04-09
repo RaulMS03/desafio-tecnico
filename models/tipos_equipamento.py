@@ -6,4 +6,4 @@ class TiposEquipamento(BaseModel):
     nome = TextField()
 
     class Meta:
-        db_table = "tipos_equipamentos"
+        table_name = "tipos_equipamentos"

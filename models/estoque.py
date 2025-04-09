@@ -10,4 +10,4 @@ class Estoques(BaseModel):
     atualizado_em = DateTimeField(default=datetime.datetime.now())
 
     class Meta:
-        db_table = "estoques"
+        table_name = "estoques"

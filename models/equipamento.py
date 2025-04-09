@@ -16,4 +16,4 @@ class Equipamentos(BaseModel):
     categoria_id = ForeignKeyField(Categorias, backref="equipamentos")
 
     class Meta:
-        db_table = "equipamentos"
+        table_name = "equipamentos"

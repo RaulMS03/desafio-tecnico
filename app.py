@@ -16,38 +16,42 @@ import time
 
 load_dotenv()
 
-app = Flask(__name__)
-app.config['JWT_SECRET_KEY'] = os.getenv('JWT_SECRET_KEY')
-
-jwt = JWTManager(app)
-
 JWT_ISSUED_AT_MIN = int(time.time())
 
-@app.before_request
-def check_expired_token():
-    public_paths = ['/auth/register', '/auth/login']
-    if request.path in public_paths:
-        return
+def create_app():
+    app = Flask(__name__)
+    app.config['JWT_SECRET_KEY'] = os.getenv('JWT_SECRET_KEY')
+    app.config['TESTING'] = False
 
-    try:
-        verify_jwt_in_request()
-        claims = get_jwt()
-        if claims:
-            token_iat = claims.get("iat", 0)
-            if token_iat < JWT_ISSUED_AT_MIN:
-                return jsonify({"message": "Token expirado. Faça login novamente."}), 401
-    except (NoAuthorizationError, JWTDecodeError):
-        pass
+    JWTManager(app)
 
-app.register_blueprint(stock_bp)
-app.register_blueprint(user_bp)
-app.register_blueprint(location_bp)
-app.register_blueprint(equipment_type_bp)
-app.register_blueprint(category_bp)
-app.register_blueprint(equipments_bp)
+    app.register_blueprint(stock_bp)
+    app.register_blueprint(user_bp)
+    app.register_blueprint(location_bp)
+    app.register_blueprint(equipment_type_bp)
+    app.register_blueprint(category_bp)
+    app.register_blueprint(equipments_bp)
 
-#swagger = Swagger(app)
+    #swagger = Swagger(app)
 
-@app.errorhandler(ValidationError)
-def validation_error(error):
-    return jsonify({'message': error.messages})
+    @app.before_request
+    def check_expired_token():
+        public_paths = ['/auth/register', '/auth/login']
+        if request.path in public_paths:
+            return
+
+        try:
+            verify_jwt_in_request()
+            claims = get_jwt()
+            if claims:
+                token_iat = claims.get("iat", 0)
+                if token_iat < JWT_ISSUED_AT_MIN:
+                    return jsonify({"message": "Token expirado. Faça login novamente."}), 401
+        except (NoAuthorizationError, JWTDecodeError):
+            pass
+
+    @app.errorhandler(ValidationError)
+    def validation_error(error):
+        return jsonify({'message': error.messages})
+
+    return app

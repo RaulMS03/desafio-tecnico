@@ -8,4 +8,4 @@ class Usuarios(BaseModel):
     senha_hash = CharField()
 
     class Meta:
-        db_table = "usuarios"
+        table_name = "usuarios"

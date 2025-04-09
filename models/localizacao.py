@@ -8,4 +8,4 @@ class Localizacoes(BaseModel):
     estoque_id = ForeignKeyField(Estoques, backref="localizacoes")
 
     class Meta:
-        db_table = "localizacoes"
+        table_name = "localizacoes"

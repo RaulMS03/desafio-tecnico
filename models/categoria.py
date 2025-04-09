@@ -6,4 +6,4 @@ class Categorias(BaseModel):
     nome = TextField()
 
     class Meta:
-        db_table = "categorias"
+        table_name = "categorias"

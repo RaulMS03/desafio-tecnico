@@ -14,4 +14,4 @@ class HistoricoMovimentacao(BaseModel):
     localizacao = ForeignKeyField(Localizacoes, backref="historicos")
 
     class Meta:
-        db_table = "historico_movimentacao"
+        table_name = "historico_movimentacao"
