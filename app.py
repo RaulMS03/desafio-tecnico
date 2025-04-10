@@ -47,7 +47,6 @@ def create_app(testing=False):
     app.register_blueprint(equipments_bp)
     app.register_blueprint(movement_bp)
 
-    Swagger(app)
 
     @app.before_request
     def check_expired_token():

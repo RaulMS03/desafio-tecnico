@@ -89,14 +89,6 @@ Adicione uma nova conexão com os seguintes dados:
 - **Senha:** valor de `POSTGRES_PASSWORD` no seu `.env`
 
 ---
-
-## 📄 Acessando a Documentação Swagger
-
-Após subir os containers, você pode acessar a documentação interativa da API gerada pelo Swagger em:
-
-- **URL:** [http://localhost:5000/apidocs/](http://localhost:5000/apidocs/)
-
----
 ## 📄 Como Rodar os Testes
 
 ### Requisitos
