@@ -36,8 +36,8 @@ Este projeto é uma API RESTful desenvolvida em Python utilizando Flask. A aplic
 1. **Clone o repositório:**
 
 ```bash
-git clone https://github.com/RaulMS03/desafio-tecnico.git
-cd desafio-tecnico
+    git clone https://github.com/RaulMS03/desafio-tecnico.git
+    cd desafio-tecnico
 ```
 
 2. **Configure o `.env`:**
@@ -66,7 +66,7 @@ JWT_SECRET_KEY=sua_senha_jwt
 3. **Suba os containers:**
 
 ```bash
-docker-compose up --build
+  docker-compose up --build
 ```
 
 A aplicação estará disponível em: [http://localhost:5000](http://localhost:5000)
@@ -95,6 +95,25 @@ Adicione uma nova conexão com os seguintes dados:
 Após subir os containers, você pode acessar a documentação interativa da API gerada pelo Swagger em:
 
 - **URL:** [http://localhost:5000/apidocs/](http://localhost:5000/apidocs/)
+
+---
+## 📄 Como Rodar os Testes
+
+### Requisitos
+
+Antes de rodar os testes, certifique-se de que o container esta rodando.
+
+### Passos para Rodar os Testes
+
+#### 1. 🖥️ Dentro do docker
+```bash
+  docker-compose exec api pytest
+```
+#### 2. 🖥️ Localmente(fora do Docker)
+basta apenas rodar no terminal na raiz do projeto
+```bash
+   pytest 
+```
 
 ---
 
@@ -130,6 +149,7 @@ Authorization: Bearer <seu_token>
 - PostgreSQL
 - Docker e Docker Compose
 - JWT (JSON Web Token)
+- Pytest
 
 ---
 
@@ -142,6 +162,7 @@ Authorization: Bearer <seu_token>
 - Endpoints protegidos por token JWT.
 - Banco de dados gerenciado por Peewee.
 - Banco e tabelas criados automaticamente no primeiro build.
+- Teste automatizado com pytest
 
 ---
 

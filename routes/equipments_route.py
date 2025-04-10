@@ -90,5 +90,5 @@ def update_equipment(id):
         return response(message=f"Erro de validação: {error.messages}", status=400)
     except ValueError as error:
         return response(message=str(error), status=404)
-    except Exception as e:
-        return response(message=f"Erro ao atualizar equipamento: {str(e)}", status=500)
+    except Exception as error:
+        return response(message=f"Erro ao atualizar equipamento: {str(error)}", status=500)

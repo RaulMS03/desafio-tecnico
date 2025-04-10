@@ -45,7 +45,7 @@ def create_stock():
     try:
         data = request.get_json()
         validate_fields(data, {"nome"})
-        validate_data = StockSchema().load(data, partial=True)
+        validate_data = StockSchema().load(data)
         create_valid_stock(validate_data)
         return response(message="Estoque criado com sucesso", status=201)
     except ValueError as error:

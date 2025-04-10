@@ -1,7 +1,7 @@
 from peewee import AutoField, ForeignKeyField, TextField, DateTimeField, CharField, Check
 from .base import BaseModel
 from .equipamento import Equipamentos
-from .usuario import Usuarios
+from .usuarios import Usuarios
 from .localizacao import Localizacoes
 import datetime
 

@@ -2,7 +2,7 @@ import peewee
 import jwt
 from flask import request
 from werkzeug.security import check_password_hash
-from models.usuario import Usuarios
+from models.usuarios import Usuarios
 import os
 
 def create_user(data):
