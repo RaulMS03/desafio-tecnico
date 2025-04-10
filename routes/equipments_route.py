@@ -74,7 +74,7 @@ def update_equipment(id):
     try:
         data = request.get_json()
 
-        required_fields = {"nome", "estoque_id", "tipo_id", "categoria_id"}
+        required_fields = {"nome", "status", "estoque_id", "tipo_id", "categoria_id"}
         validate_fields(data, required_fields)
 
         if any(data[field] == "" for field in required_fields):
