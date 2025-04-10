@@ -110,7 +110,7 @@ Antes de rodar os testes, certifique-se de que o container esta rodando.
   docker-compose exec api pytest
 ```
 #### 2. 🖥️ Localmente(fora do Docker)
-basta apenas rodar no terminal na raiz do projeto
+basta apenas rodar no terminal na raiz do projeto.
 ```bash
    pytest 
 ```
@@ -162,14 +162,14 @@ Authorization: Bearer <seu_token>
 - Endpoints protegidos por token JWT.
 - Banco de dados gerenciado por Peewee.
 - Banco e tabelas criados automaticamente no primeiro build.
-- Teste automatizado com pytest
+- Teste automatizado com pytest.
 
 ---
 
 # 📌 Observações
 
 - O serviço de backend só inicia após o banco estar pronto.
-- suporte a testes automatizados
+- suporte a testes automatizados.
 - Código modular e seguindo boas práticas de clean code.
 
 ## Decisões Técnicas
