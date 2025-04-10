@@ -166,9 +166,27 @@ Authorization: Bearer <seu_token>
 
 ---
 
-## 📌 Observações
+# 📌 Observações
 
 - O serviço de backend só inicia após o banco estar pronto.
+- suporte a testes automatizados
 - Código modular e seguindo boas práticas de clean code.
+
+## Decisões Técnicas
+- **Linguagem:** Python
+
+Escolhi Python pela sua simplicidade, versatilidade e vasta comunidade de suporte.
+
+- **ORM:** Peewee
+
+Optei pelo Peewee por ser mais simples e direto, atendendo bem às necessidades do projeto, enquanto o SQLAlchemy é mais complexo para este caso.
+
+- **Framework de API:** Flask
+
+O Flask foi escolhido pela sua flexibilidade, facilidade de uso e ampla documentação, apesar do FastAPI oferecer performance superior.
+
+- **Testes:** pytest
+
+Com o pytest, é possível escrever testes de forma modular e escalável, além de fornecer relatórios claros para facilitar a identificação de falhas.
 
 ---

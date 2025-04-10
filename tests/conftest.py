@@ -29,7 +29,6 @@ def setup_test_db():
         HistoricoMovimentacao
     ])
 
-    # Dados mockados
     Usuarios.create(
         id=1,
         nome="admin",
@@ -64,7 +63,7 @@ def admin_token(app):
             senha_hash=generate_password_hash("admin"),
             papel="admin"
         )
-        return create_access_token(identity=str(user.id))  # 👈 ID como string
+        return create_access_token(identity=str(user.id))
 
 @pytest.fixture
 def headers(admin_token):

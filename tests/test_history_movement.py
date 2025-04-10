@@ -26,9 +26,8 @@ def setup_movimentacao():
     }
 
 def test_get_all_movement(client, headers, setup_movimentacao):
-    # Criar uma movimentação antes do GET
     payload = {
-        "equipamento_id": setup_movimentacao["equipamento_id"],  # Alterar para 'equipamento_id'
+        "equipamento_id": setup_movimentacao["equipamento_id"],
         "tipo_movimentacao": "transferencia",
         "localizacao_id": setup_movimentacao["localizacao_destino"]
     }
@@ -43,7 +42,7 @@ def test_get_all_movement(client, headers, setup_movimentacao):
 
 def test_create_movimentacao(client, headers, setup_movimentacao):
     payload = {
-        "equipamento_id": setup_movimentacao["equipamento_id"],  # Alterar para 'equipamento_id'
+        "equipamento_id": setup_movimentacao["equipamento_id"],
         "tipo_movimentacao": "transferencia",
         "localizacao_id": setup_movimentacao["localizacao_destino"]
     }

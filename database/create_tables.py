@@ -18,17 +18,15 @@ def create_all_tables(testing=False):
     try:
         logging.info("Conectando ao banco.")
 
-        # Inicialize o banco de dados primeiro
         if testing:
             from peewee import SqliteDatabase
-            db.initialize(SqliteDatabase(':memory:'))  # Banco de dados em memória para testes
+            db.initialize(SqliteDatabase(':memory:'))
         else:
-            db.initialize(get_postgres_database())  # Banco real (PostgreSQL)
+            db.initialize(get_postgres_database())
             connect_with_retry(db)
 
-        # Verifique se a conexão está aberta
         if db.is_closed():
-            db.connect()  # Conecta ao banco se ainda não estiver conectado
+            db.connect()
             logging.info("Banco de dados conectado com sucesso.")
 
         logging.info("Criando tabelas.")
@@ -40,8 +38,7 @@ def create_all_tables(testing=False):
         logging.error(f"Erro ao criar tabelas: {error}")
     finally:
         if not db.is_closed():
-            db.close()  # Fecha a conexão após finalizar as operações
-
+            db.close()
 
 if __name__ == "__main__":
     create_all_tables()

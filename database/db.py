@@ -1,9 +1,8 @@
-# database/db.py
 from peewee import PostgresqlDatabase, SqliteDatabase, Proxy, OperationalError
 import os
 import time
 
-db = Proxy()  # É um "placeholder" para o banco real
+db = Proxy()
 
 def get_postgres_database():
     return PostgresqlDatabase(
@@ -17,10 +16,10 @@ def get_postgres_database():
 def init_db(testing=False):
     """Inicializa o banco de dados, dependendo do ambiente (testes ou produção)."""
     if testing:
-        test_db = SqliteDatabase(':memory:')  # Banco SQLite em memória para testes
+        test_db = SqliteDatabase(':memory:')
         db.initialize(test_db)
     else:
-        db.initialize(get_postgres_database())  # Inicializa o PostgreSQL real
+        db.initialize(get_postgres_database())
 
 def connect_with_retry(db_instance, attempts=10, seconds=2):
     for i in range(attempts):
