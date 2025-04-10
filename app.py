@@ -8,6 +8,7 @@ from routes.category_route import category_bp
 from routes.equipment_type_route import equipment_type_bp
 from routes.equipments_route import equipments_bp
 from routes.location_route import location_bp
+from routes.movement_history_route import movement_bp
 from routes.stock_route import stock_bp
 from routes.user_route import user_bp
 from marshmallow.exceptions import ValidationError
@@ -31,6 +32,7 @@ def create_app():
     app.register_blueprint(equipment_type_bp)
     app.register_blueprint(category_bp)
     app.register_blueprint(equipments_bp)
+    app.register_blueprint(movement_bp)
 
     Swagger(app)
 
