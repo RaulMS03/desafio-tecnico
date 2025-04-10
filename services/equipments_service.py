@@ -13,10 +13,10 @@ def get_filtered_equipments(filters: dict):
     if 'categoria_id' in filters:
         query = query.where(Equipamentos.categoria_id == filters['categoria_id'])
 
-    equipamentos = list(query)
-    if not equipamentos:
+    equipments = list(query)
+    if not equipments:
         raise ValueError("Nenhum equipamento encontrado com os filtros fornecidos.")
-    return equipamentos
+    return equipments
 
 def check_equipment_duplicate(nome, estoque_id, ignore_id=None):
     query = Equipamentos.select().where(

@@ -2,7 +2,7 @@ from models import Equipamentos, HistoricoMovimentacao
 from models.base import db
 import peewee
 
-from utils.dict_utils import historic_to_dict
+from utils.dict import historic_to_dict
 
 def get_movements_history():
     return list(HistoricoMovimentacao.select())
@@ -14,14 +14,14 @@ def register_movement(equipamento_id, usuario_id, tipo_movimentacao, localizacao
             equipment.localizacao_id = localizacao_id
             equipment.save()
 
-            historico = HistoricoMovimentacao.create(
+            history = HistoricoMovimentacao.create(
                 equipamento_id=equipamento_id,
                 usuario_id=usuario_id,
                 tipo_movimentacao=tipo_movimentacao,
                 localizacao_id=localizacao_id
             )
 
-            return historic_to_dict(historico)
+            return historic_to_dict(history)
 
     except peewee.DoesNotExist:
         raise ValueError("Alguma instancia não foi encontrada")
