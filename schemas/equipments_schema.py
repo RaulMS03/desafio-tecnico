@@ -11,3 +11,4 @@ class EquipmentsSchema(Schema):
     estoque_id = ForeignKeyFieldDumpLoad("estoque_id", cast_type=int)
     tipo_id = ForeignKeyFieldDumpLoad("tipo_id", cast_type=int)
     categoria_id = ForeignKeyFieldDumpLoad("categoria_id", cast_type=int)
+    localizacao_id = ForeignKeyFieldDumpLoad("localizacao_id", cast_type=int)

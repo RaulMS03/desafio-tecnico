@@ -1,7 +1,8 @@
 import peewee
 
 from datetime import datetime, timezone
-from models import Equipamentos, Estoques, TiposEquipamento, Categorias
+from models import Equipamentos, Estoques, TiposEquipamento, Categorias, Localizacoes
+
 
 def get_filtered_equipments(filters: dict):
     query = Equipamentos.select().where(Equipamentos.status)
@@ -32,6 +33,7 @@ def create_valid_equipments(data):
         stock = Estoques.get_by_id(data["estoque_id"])
         equipment_type = TiposEquipamento.get_by_id(data["tipo_id"])
         category = Categorias.get_by_id(data["categoria_id"])
+        location = Localizacoes.get_by_id(data["localizacao_id"])
     except peewee.DoesNotExist:
         raise ValueError("Alguma referência de ID fornecida não existe.")
 
@@ -43,7 +45,8 @@ def create_valid_equipments(data):
         status=data["status"],
         estoque_id=stock.id,
         tipo_id=equipment_type.id,
-        categoria_id=category.id
+        categoria_id=category.id,
+        localizacao_id=location.id
     )
 
 def get_equipment_by_id(id: int) -> Equipamentos:

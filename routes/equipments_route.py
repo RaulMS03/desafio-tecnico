@@ -28,7 +28,7 @@ def get_equipments():
 def create_equipments():
     try:
         data = request.get_json()
-        validate_fields(data, {"nome", "status", "estoque_id", "tipo_id", "categoria_id"})
+        validate_fields(data, {"nome", "status", "estoque_id", "tipo_id", "categoria_id", "localizacao_id"})
         validate_data = EquipmentsSchema().load(data)
         create_valid_equipments(validate_data)
         return response(message="Equipamento criado com sucesso", status=201)
@@ -74,7 +74,7 @@ def update_equipment(id):
     try:
         data = request.get_json()
 
-        required_fields = {"nome", "status", "estoque_id", "tipo_id", "categoria_id"}
+        required_fields = {"nome", "status", "estoque_id", "tipo_id", "categoria_id", "localizacao_id"}
         validate_fields(data, required_fields)
 
         if any(data[field] == "" for field in required_fields):

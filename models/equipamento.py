@@ -1,4 +1,6 @@
 from peewee import AutoField, TextField, DateTimeField, ForeignKeyField, BooleanField
+
+from . import Localizacoes
 from .base import BaseModel
 from .estoque import Estoques
 from .tipos_equipamento import TiposEquipamento
@@ -14,6 +16,7 @@ class Equipamentos(BaseModel):
     estoque_id = ForeignKeyField(Estoques, backref="equipamentos")
     tipo_id = ForeignKeyField(TiposEquipamento, backref="equipamentos")
     categoria_id = ForeignKeyField(Categorias, backref="equipamentos")
+    localizacao_id = ForeignKeyField(Localizacoes, backref="equipamentos")
 
     class Meta:
         table_name = "equipamentos"
